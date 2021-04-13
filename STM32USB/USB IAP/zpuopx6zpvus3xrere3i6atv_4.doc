@@ -1,0 +1,21 @@
+﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<a href="http://www.chinadmd.com" target="_blank"><img alt="中华文本库" src="http://www.chinadmd.com/img/logo.jpg"></a>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a> 地址：<a href="http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_4.html" target="_blank">http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_4.html</a>
+<br /><br />
+<h1>[STM32入门]---利用ST提供的USB例程实现USB IAP功能</h1>
+<p>
+
+<p>改为</p>
+<p>#define ApplicationAddress 0x08004000</p>
+<p> </p>
+<p>编译代码，下载到STM3210 Evaluation Board。</p>
+<p> </p>
+<p>6、在ST的网站中找到USB IAP的PC端用于程序DfuSe USB Device Firmwa</p>
+<p>re Upgrade，安装后执行DfuSe Demonstration程序。</p>
+<p> </p>
+
+</p>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a>
+</html>

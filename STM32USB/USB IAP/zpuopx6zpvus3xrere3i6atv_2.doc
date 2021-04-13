@@ -1,0 +1,45 @@
+﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<a href="http://www.chinadmd.com" target="_blank"><img alt="中华文本库" src="http://www.chinadmd.com/img/logo.jpg"></a>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a> 地址：<a href="http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_2.html" target="_blank">http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_2.html</a>
+<br /><br />
+<h1>[STM32入门]---利用ST提供的USB例程实现USB IAP功能</h1>
+<p>
+
+<p>1、打开STM3210B-EVAL demonstration software压缩包，在STM3210B-EVAL demonstration software\Demo\source下打开main.c文件，找到void Interr</p>
+<p>uptConfig(void) 函数</p>
+<p> </p>
+<p>/* Set the Vector Table base address at 0x08000000 */</p>
+<p>NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x00);</p>
+<p> </p>
+<p>这里我们需要修改代码的中断矢量起始地址，这样做的目的是为了处理IAP代码在Flash存放的区域与Application Code部分的存放空间不会发生地址冲突。这里我们假设IAP存放在User Flash的0x08000000～0x08003FFF区域，Application code存放在User Flash的0x08004000～0x0801FFFF区域。因为Application code的开始地址是由0x08004000开始，这样我们需要为应用代码</p>
+<p>的中断向量地址做一个重映射。因此我们修改该代码为：</p>
+<p> </p>
+<p>/* Set the Vector Table base address at 0x08004000 */</p>
+<p>NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x4000);</p>
+<p> </p>
+<p>请注意这里NVIC_SetVectorTable函数的型参送入的是相对偏移地址，而不</p>
+<p>是绝对地址；</p>
+<p> </p>
+<p>2、在STM3210B-EVAL demonstration software\Demo\project\EWARM下找到lnkarm_flash.xcl文件，在XCL文件中找到下面的配置，该配置用于定制应用代</p>
+<p>码在Flash区域的存放空间和代码运行是RAM可以提供的空间。</p>
+<p> </p>
+<p>// Code memory in FLASH</p>
+<p>-DROMSTART=0x8000000</p>
+<p>-DROMEND=0x803FFFF</p>
+<p> </p>
+<p>// Data in RAM</p>
+<p>-DRAMSTART=0x20000000</p>
+<p>-DRAMEND=0x20004FFF</p>
+<p> </p>
+<p>由于我们的目标应用代码将是在0x08004000区域运行，因此我们修改为：</p>
+<p> </p>
+<p>// Code memory in FLASH</p>
+<p>-DROMSTART=0x8004000</p>
+<p>-DROMEND=0x801FFFF</p>
+<p> </p>
+
+</p>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a>
+</html>

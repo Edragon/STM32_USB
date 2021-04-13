@@ -1,0 +1,48 @@
+﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<a href="http://www.chinadmd.com" target="_blank"><img alt="中华文本库" src="http://www.chinadmd.com/img/logo.jpg"></a>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a> 地址：<a href="http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_3.html" target="_blank">http://www.chinadmd.com/file/zpuopx6zpvus3xrere3i6atv_3.html</a>
+<br /><br />
+<h1>[STM32入门]---利用ST提供的USB例程实现USB IAP功能</h1>
+<p>
+
+<p>// Data in RAM</p>
+<p>-DRAMSTART=0x20000000</p>
+<p>-DRAMEND=0x20004FFF</p>
+<p> </p>
+<p>在编译的时候请确保Project－&gt;Options－&gt;Linker－&gt;Config标签下的链接命</p>
+<p>令文件选择的是上述lnkarm_flash.xcl文件；</p>
+<p> </p>
+<p>3、应用部分改好，现在我们修改USB固件升级部分的代码，打开STM32F10x</p>
+<p>xx USB developer kit开发包。</p>
+<p> </p>
+<p>4、在开发包下面找到 \STM32F10xUSBLib\USBLib\demos\Device_Firmware_Upgrade例程，该例程是一个在STM32F10xx系列MCU上实现运行在User Flash区域的IAP自升级代码，通过STM32自身提供的USB接口实现。在\STM32F10xUSBLib\USBLib\demos\Device_Firmware_Upgrade\source路径下找到</p>
+<p>main.c文件，在56行：</p>
+<p> </p>
+<p>if (DFU_Button_Read() != 0x00)</p>
+<p>{ /* Test if user code is programmed starting from address 0x8003000 */</p>
+<p>if (((*(vu32*)0x8003000) &amp; 0x2FFF0000 ) == 0x20000000)</p>
+<p>{ /* Jump to user application */</p>
+<p> </p>
+<p>JumpAddress = *(vu32*) (ApplicationAddress + 4);</p>
+<p>Jump_To_Application = (pFunction) JumpAddress;</p>
+<p>/* Initialize user application's Stack Pointer */</p>
+<p>__MSR_MSP(*(vu32*) ApplicationAddress);</p>
+<p>Jump_To_Application();</p>
+<p>}</p>
+<p>} /* Otherwise enters DFU mode to allow user to program his application */</p>
+<p> </p>
+<p>这段代码的功能是对应用部分的代码开始地址做判断，这里的地址与我们之</p>
+<p>前的步骤1、2都是对应的。</p>
+<p> </p>
+<p>同样这个代码做如下更改：</p>
+<p>/* Test if user code is programmed starting from address 0x8004000 */</p>
+<p>if (((*(vu32*)0x8004000) &amp; 0x2FFF0000 ) == 0x20000000)</p>
+<p> </p>
+<p>5、hw_config.h中定义：</p>
+<p>#define ApplicationAddress 0x08003000</p>
+
+</p>
+<br />
+<a href="http://www.chinadmd.com" target="_blank" title="中华文本库">中华文本库</a>
+</html>
